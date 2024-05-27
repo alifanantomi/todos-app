@@ -55,10 +55,28 @@ export const useTodoStore = defineStore('todos', () => {
     todos.value = data.value
   }
 
-  const removeTodo = (index: number) => {
-    if (todos.value) {
-      todos.value.splice(index, 1)
+  const removeTodo = async (id: number) => {
+    const { baseUrl, apiKey, secretKey } = useAppConfig()
+
+    const { data, error} = await useFetch<Todo[]>(`rest/v1/todo?id=eq.${id}`, {
+      baseURL: baseUrl,
+      method: 'DELETE',
+      headers: {
+        apikey: apiKey,
+        Authorization: `Bearer ${secretKey}`
+      }
+    })
+
+    if (error) {
+      console.error(error)
+      return
     }
+
+    todos.value = data.value
+
+    // if (todos.value) {
+    //   todos.value.splice(index, 1)
+    // }
   }
 
   return {

@@ -17,13 +17,11 @@ const addTodoHandler = async () => {
   getTodos()
 }
 
-const removeTodoHandler = (index: number) => {
-  removeTodo(index)
-}
+const removeTodoHandler = async (id: number) => {
+  await removeTodo(id)
 
-// const fetchTodos = async () => {
-//   await getTodos()
-// }
+  getTodos()
+}
 
 await getTodos()
 
@@ -37,10 +35,13 @@ await getTodos()
       <button class="bg-blue-400 text-white p-2" @click="addTodoHandler">Tambah</button>
     </div>
     <ul>
-      <li class="flex gap-2 items-center py-2 border-b-[1px] border-gray-300" v-for="(todo, index) in todos" :key="index">
+      <!-- <li class="flex gap-2 items-center py-2 border-b-[1px] border-gray-300" v-for="(todo, index) in todos" :key="index">
         <input type="checkbox" v-model="todo.status" />
         <span :class="{ 'line-through': todo.status }">{{ todo.title }}</span>
         <button @click="removeTodoHandler(todo.id)">Hapus</button>
+      </li> -->
+      <li class="w-full py-2 border-b-[1px] border-gray-300" v-for="(todo, index) in todos" :key="index">
+        <TodoItem :todo="todo" @remove-todo="removeTodoHandler" />
       </li>
     </ul>
   </div>
