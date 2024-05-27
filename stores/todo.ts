@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
+import type { CategoryInterface } from './category'
 
 interface Todo {
   id: number
   title: string
   status: boolean
+  category: CategoryInterface | null
 }
 
 export const useTodoStore = defineStore('todos', () => {
@@ -12,7 +14,7 @@ export const useTodoStore = defineStore('todos', () => {
   const getTodos = async () => {
     const { baseUrl, apiKey, secretKey } = useAppConfig()
 
-    const { data, error} = await useFetch<Todo[]>('rest/v1/todo', {
+    const { data, error} = await useFetch<Todo[]>('rest/v1/todo?select=id,title,status,created_at,category(id,name)', {
       baseURL: baseUrl,
       method: 'GET',
       headers: {
@@ -31,8 +33,14 @@ export const useTodoStore = defineStore('todos', () => {
     }
   }
 
-  const addTodo = async (text: string) => {
+  const addTodo = async (text: string, categoryId?: number | null) => {
     const { baseUrl, apiKey, secretKey } = useAppConfig()
+    const body: {[key: string]: any} = { 
+      title: text, 
+      status: false
+    }
+
+    if (categoryId) body['category'] = categoryId
 
     const { data, error} = await useFetch<Todo[]>('rest/v1/todo', {
       baseURL: baseUrl,
@@ -41,10 +49,7 @@ export const useTodoStore = defineStore('todos', () => {
         apikey: apiKey,
         Authorization: `Bearer ${secretKey}`
       },
-      body: { 
-        title: text, 
-        status: false
-      }
+      body: body
     })
 
     if (error) {

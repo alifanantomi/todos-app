@@ -7,6 +7,8 @@ const emits = defineEmits(['remove-todo', 'update-todo'])
     <div class="flex gap-2 items-center">
       <input type="checkbox" v-model="todo.status" @change="emits('update-todo', todo.id, todo.status)" />
       <span :class="{ 'line-through': todo.status }">{{ todo.title }}</span>
+
+      <span v-if="todo?.category">({{ todo?.category?.name }})</span>
     </div>
     <button class="text-sm" @click="emits('remove-todo', todo.id)">Hapus</button>
   </div>
