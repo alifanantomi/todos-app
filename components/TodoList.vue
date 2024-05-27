@@ -5,7 +5,7 @@ import { ref } from 'vue'
 const newTodo = ref<string>('')
 const todoStore = useTodoStore()
 
-const { getTodos, addTodo, removeTodo } = todoStore
+const { getTodos, addTodo, updateTodo, removeTodo } = todoStore
 const { todos } = storeToRefs(todoStore)
 
 const addTodoHandler = async () => {
@@ -23,6 +23,12 @@ const removeTodoHandler = async (id: number) => {
   getTodos()
 }
 
+const onUpdateTodo = async (id: number, status: boolean) => {
+  await updateTodo(id, status)
+
+  getTodos()
+}
+
 await getTodos()
 
 </script>
@@ -35,13 +41,8 @@ await getTodos()
       <button class="bg-blue-400 text-white p-2" @click="addTodoHandler">Tambah</button>
     </div>
     <ul>
-      <!-- <li class="flex gap-2 items-center py-2 border-b-[1px] border-gray-300" v-for="(todo, index) in todos" :key="index">
-        <input type="checkbox" v-model="todo.status" />
-        <span :class="{ 'line-through': todo.status }">{{ todo.title }}</span>
-        <button @click="removeTodoHandler(todo.id)">Hapus</button>
-      </li> -->
       <li class="w-full py-2 border-b-[1px] border-gray-300" v-for="(todo, index) in todos" :key="index">
-        <TodoItem :todo="todo" @remove-todo="removeTodoHandler" />
+        <TodoItem :todo="todo" @remove-todo="removeTodoHandler" @update-todo="onUpdateTodo" />
       </li>
     </ul>
   </div>

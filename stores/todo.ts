@@ -55,6 +55,29 @@ export const useTodoStore = defineStore('todos', () => {
     todos.value = data.value
   }
 
+  const updateTodo = async (id: number, status: boolean) => {
+    const { baseUrl, apiKey, secretKey } = useAppConfig()
+
+    const { data, error} = await useFetch<Todo[]>(`rest/v1/todo?id=eq.${id}`, {
+      baseURL: baseUrl,
+      method: 'PATCH',
+      headers: {
+        apikey: apiKey,
+        Authorization: `Bearer ${secretKey}`
+      },
+      body: {
+        status: status
+      }
+    })
+
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    todos.value = data.value
+  }
+
   const removeTodo = async (id: number) => {
     const { baseUrl, apiKey, secretKey } = useAppConfig()
 
@@ -73,16 +96,13 @@ export const useTodoStore = defineStore('todos', () => {
     }
 
     todos.value = data.value
-
-    // if (todos.value) {
-    //   todos.value.splice(index, 1)
-    // }
   }
 
   return {
     todos,
     getTodos,
     addTodo,
+    updateTodo,
     removeTodo
   }
 })
