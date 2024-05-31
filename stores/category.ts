@@ -20,8 +20,8 @@ export const useCategoryStore = defineStore('category', () => {
 
     if (data) categories.value = data.value
 
-    if (error) {
-      console.error(error)
+    if (error.value) {
+      console.error(error.value)
       return
     }
   }
@@ -41,8 +41,8 @@ export const useCategoryStore = defineStore('category', () => {
       }
     })
 
-    if(error) {
-      console.error(error)
+    if(error.value) {
+      console.error(error.value)
       return
     }
 

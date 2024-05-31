@@ -27,8 +27,8 @@ export const useTodoStore = defineStore('todos', () => {
       todos.value = data.value
     }
 
-    if (error) {
-      console.error(error)
+    if (error.value) {
+      console.error(error.value)
       return
     }
   }
@@ -52,8 +52,8 @@ export const useTodoStore = defineStore('todos', () => {
       body: body
     })
 
-    if (error) {
-      console.error(error)
+    if (error.value) {
+      console.error(error.value)
       return
     }
 
@@ -95,8 +95,8 @@ export const useTodoStore = defineStore('todos', () => {
       }
     })
 
-    if (error) {
-      console.error(error)
+    if (error.value) {
+      console.error(error.value)
       return
     }
 

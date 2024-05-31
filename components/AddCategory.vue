@@ -15,6 +15,12 @@ const addCategoryHandler = async () => {
 }
 
 await getCategories()
+
+const { onLogout } = useAuth()
+const onClickLogout = () => {
+  onLogout()
+  reloadNuxtApp()
+}
 </script>
 
 <template>
@@ -22,6 +28,7 @@ await getCategories()
     <div class="flex items-end gap-4">
       <h1 class="text-3xl font-semibold">Add Category</h1>
       <NuxtLink to="/">To-Do</NuxtLink>
+      <button class="bg-red-400 w-max px-4 py-1" @click="onClickLogout">Logout</button>
     </div>
     <div class="flex gap-2">
       <input type="text" v-model="newCategory" class="w-full border-2 border-blue-400 p-2" placeholder="Add Category" />

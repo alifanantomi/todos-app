@@ -39,6 +39,12 @@ const onUpdateTodo = async (id: number, status: boolean) => {
 await getTodos()
 await getCategories()
 
+const { onLogout } = useAuth()
+const onClickLogout = () => {
+  onLogout()
+  reloadNuxtApp()
+}
+
 </script>
 
 <template>
@@ -46,6 +52,7 @@ await getCategories()
     <div class="flex items-end gap-4">
       <h1 class="text-3xl font-semibold">Daftar To-Do</h1>
       <NuxtLink to="/category">Add Category</NuxtLink>
+      <button class="bg-red-400 w-max px-4 py-1" @click="onClickLogout">Logout</button>
     </div>
     <div class="flex gap-2">
       <input class="w-full border-2 border-blue-400 p-2" v-model="newTodo" @keyup.enter="addTodoHandler" placeholder="Tambah tugas baru" />
