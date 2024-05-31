@@ -35,12 +35,14 @@ export const useTodoStore = defineStore('todos', () => {
 
   const addTodo = async (text: string, categoryId?: number | null) => {
     const { baseUrl, apiKey, secretKey } = useAppConfig()
+    const { getUser } = useAuth()
+    const user = getUser()
     const body: {[key: string]: any} = { 
       title: text, 
-      status: false
+      status: false,
+      user_id: user?.id ?? null,
+      category: categoryId
     }
-
-    if (categoryId) body['category'] = categoryId
 
     const { data, error} = await useFetch<Todo[]>('rest/v1/todo', {
       baseURL: baseUrl,

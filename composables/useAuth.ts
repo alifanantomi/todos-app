@@ -1,3 +1,9 @@
+export interface IUser {
+  id: string
+  email: string
+  role: string
+}
+
 export default function() {
   const setToken = (token: string) => {
     useCookie('token', { path: '/' }).value = token
@@ -17,11 +23,21 @@ export default function() {
     useCookie('user').value = null
   }
 
+  const getUser = ():IUser | null => {
+    const user = useCookie('user').value
+    if (typeof user == 'string') {
+      return JSON.parse(user)
+    }
+
+    return user || null
+  }
+
   return {
     setToken,
     getToken,
     setRefreshToken,
     getRefreshToken,
-    onLogout
+    onLogout,
+    getUser
   }
 }
